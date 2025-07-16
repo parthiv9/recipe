@@ -52,11 +52,11 @@ const Home = () => {
     <Container fluid="md" className="py-4">
       <Breadcrumbs />
       {/* Top Controls: Search and Sort */}
-      <Row className="align-items-center justify-content-between gx-2 mb-3">
-        <Col xxl={6} xl={6} lg={6} md={6}>
+      <Row className="align-items-center justify-content-between gx-2 mb-3 gy-md-2 gy-sm-2 gy-2">
+        <Col xxl={6} xl={6} lg={6} md={6} sm={6}>
           <SearchBar onSearch={handleSearch} />
         </Col>
-        <Col xxl={2} xl={3} lg={3} md={6}>
+        <Col xxl={2} xl={3} lg={3} md={6} sm={6}>
           <Form.Select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
@@ -80,7 +80,7 @@ const Home = () => {
       {/* Recipes Grid */}
       <Row className="gy-4 gx-3">
         {recipes.map((recipe) => (
-          <Col key={recipe.id} xxl={3} xl={4} lg={4} md={6} sm={12}>
+          <Col key={recipe.id} xxl={3} xl={4} lg={4} md={6} sm={6} >
             <RecipeCard recipe={recipe} />
           </Col>
         ))}

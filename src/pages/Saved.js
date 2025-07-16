@@ -35,9 +35,9 @@ const Saved = () => {
               {...provided.droppableProps}
               className=""
             >
-              <Row className="gx-3">
+              <Row className="gx-3 gy-3">
                 {favorites.map((recipe, index) => (
-                  <Col xxl={4} key={recipe.id.toString()}>
+                  <Col xxl={4} xl={4} lg={2} md={6} sm={6} key={recipe.id.toString()}>
                     <Draggable
                       draggableId={recipe.id.toString()}
                       index={index}
