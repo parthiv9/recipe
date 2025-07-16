@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import RecipeCard from "../components/RecipeCard";
+import { Col, Container, Row } from "react-bootstrap";
+import Breadcrumbs from "../components/BreadCrumbs";
 
 const Saved = () => {
   const [favorites, setFavorites] = useState([]);
@@ -20,9 +22,10 @@ const Saved = () => {
     setFavorites(reordered);
     localStorage.setItem("favorites", JSON.stringify(reordered));
   };
-  
+
   return (
-    <div className="p-4">
+    <Container>
+      <Breadcrumbs />
       <h1 className="text-2xl font-bold mb-4">Your Saved Recipes</h1>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="saved-recipes">
@@ -32,29 +35,32 @@ const Saved = () => {
               {...provided.droppableProps}
               className=""
             >
-              {favorites.map((recipe, index) => (
-                <Draggable
-                  key={recipe.id.toString()}
-                  draggableId={recipe.id.toString()}
-                  index={index}
-                >
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
+              <Row className="gx-3">
+                {favorites.map((recipe, index) => (
+                  <Col xxl={4} key={recipe.id.toString()}>
+                    <Draggable
+                      draggableId={recipe.id.toString()}
+                      index={index}
                     >
-                      <RecipeCard recipe={recipe} />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <RecipeCard recipe={recipe} />
+                        </div>
+                      )}
+                    </Draggable>
+                  </Col>
+                ))}
+                {provided.placeholder}
+              </Row>
             </div>
           )}
         </Droppable>
       </DragDropContext>
-    </div>
+    </Container>
   );
 };
 

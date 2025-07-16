@@ -1,5 +1,6 @@
 @import url("../styles/App.css");
 @import url("../components/Ui/ui.css");
+@import url("../components/component.css");
 
 *,
 *::before,
