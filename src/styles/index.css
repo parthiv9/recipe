@@ -1,0 +1,10 @@
+@import url("../styles/App.css");
+@import url("../components/Ui/ui.css");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
