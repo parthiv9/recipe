@@ -23,12 +23,9 @@ function App() {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(true);
-
-  // This flag will track if user logged in at least once
   const [hasLoggedInOnce, setHasLoggedInOnce] = useState(false);
 
   useEffect(() => {
-    // Load persisted login flag from localStorage
     const loggedInFlag = localStorage.getItem("hasLoggedInOnce");
     if (loggedInFlag === "true") {
       setHasLoggedInOnce(true);
@@ -37,16 +34,13 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // Set the flag on login
       localStorage.setItem("hasLoggedInOnce", "true");
       setHasLoggedInOnce(true);
     }
   }, [isAuthenticated]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1200); // 1.2s delay
+    const timer = setTimeout(() => setLoading(false), 1200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -71,12 +65,17 @@ function App() {
     ) || null;
 
   const showBreadcrumb = location.pathname !== "/" && currentConfig;
+
   if (loading) {
     return <Preloader />;
   }
+
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
+
   return (
     <>
-      {location.pathname !== "/login" && location.pathname !== "/register" && (
+      {!isAuthPage && (
         <>
           <Header />
           {showBreadcrumb && (
@@ -89,26 +88,50 @@ function App() {
       )}
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/recipe/:id" element={<RecipePage />} />
-        <Route path="/all-recipes" element={<AllRecipes />} />
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
+        {/* Routes that require at least one login ever */}
+        <Route
+          path="/"
+          element={
+            hasLoggedInOnce ? <Home /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/recipe/:id"
+          element={
+            hasLoggedInOnce ? <RecipePage /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/all-recipes"
+          element={
+            hasLoggedInOnce ? <AllRecipes /> : <Navigate to="/login" replace />
+          }
+        />
         <Route
           path="/saved"
           element={
-            <Saved />
+            hasLoggedInOnce ? <Saved /> : <Navigate to="/login" replace />
           }
         />
-
-        <Route path="/contact-us" element={<Contact />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/contact-us"
+          element={
+            hasLoggedInOnce ? <Contact /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            hasLoggedInOnce ? <AboutUs /> : <Navigate to="/login" replace />
+          }
+        />
       </Routes>
 
-      {location.pathname !== "/login" && location.pathname !== "/register" && (
-        <Footer />
-      )}
+      {!isAuthPage && <Footer />}
     </>
   );
 }
