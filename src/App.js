@@ -14,6 +14,7 @@ import AboutImg from "./assets/img/bg-img/breadcumb1.jpg";
 import SaveImg from "./assets/img/bg-img/breadcumb2.jpg";
 import { useEffect, useState } from "react";
 import Preloader from "./components/Ui/Preloader";
+import AllRecipes from "./pages/AllRecipes";
 
 function App() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function App() {
       backgroundImage: RecipeDetails,
     },
     { path: "/saved", title: "Saved Recipes", backgroundImage: SaveImg },
+    { path: "/all-recipes", title: "Recipes", backgroundImage: SaveImg },
     { path: "/contact-us", title: "Contact Us", backgroundImage: ContactImg },
     { path: "/about", title: "About Us", backgroundImage: AboutImg },
   ];
@@ -60,6 +62,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/recipe/:id" element={<RecipePage />} />
+        <Route path="/all-recipes" element={<AllRecipes />} />
         <Route path="/saved" element={<Saved />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/about" element={<AboutUs />} />

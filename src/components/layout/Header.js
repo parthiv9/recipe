@@ -9,7 +9,7 @@ const navItems = [
   },
   {
     label: "Receipies",
-    path: "#!",
+    path: "/all-recipes",
   },
   {
     label: "Saved",

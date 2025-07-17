@@ -19,7 +19,7 @@ const SearchBar = ({ onSearch }) => {
         onChange={(e) => setQuery(e.target.value)}
         className="me-2"
       />
-      <Button type="submit" variant="outline-primary">
+      <Button type="submit" className="btn delicious-btn" variant="outline-primary">
         Search
       </Button>
     </Form>

@@ -123,10 +123,10 @@ const Home = () => {
               return (
                 <div className="col-12 col-sm-6 col-lg-4" key={data?.id}>
                   <div className="single-best-receipe-area mb-30">
-                    <img src="img/bg-img/r1.jpg" alt="" />
+                    <img src={data?.image} alt="" />
                     <div className="receipe-content">
                       <a href="receipe-post.html">
-                        <h5>Sushi Easy Receipy</h5>
+                        <h5>{data?.title}</h5>
                       </a>
                       <div className="ratings">
                         <i className="fa fa-star" aria-hidden="true"></i>

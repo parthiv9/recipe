@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { fetchRecipeById } from "../services/api";
-import Breadcrumbs from "../components/BreadCrumbs";
+import Preloader from "../components/Ui/Preloader";
 
 const RecipePage = () => {
   const { id } = useParams();
@@ -44,39 +44,82 @@ const RecipePage = () => {
   };
 
   if (loading) {
-    return <p className="text-center">Loading recipe...</p>;
+    return <Preloader />;
   }
 
   if (error) {
     return <p className="text-center text-red-500">{error}</p>;
   }
 
-  return (
-    <Container>
-      <Breadcrumbs />
+  console.log(recipe);
 
-      <Row className="justify-content-center">
-        <Col xxl={9}>
-          <img
-            src={recipe.image}
-            alt={recipe.title}
-            className="w-100 rounded mt-4"
-          />
-          <h1 className="text-2xl font-bold">{recipe.title}</h1>
-          <div
-            className="mt-4 recipe--content"
-            dangerouslySetInnerHTML={{ __html: recipe.summary }}
-          />
-          <Button
-            variant="primary"
-            onClick={saveToFavorites}
-            className="mt-3 bg-green-600 hover:bg-green-700 px-4 py-2 text-white rounded transition duration-200"
-          >
-            Save to Favorites
-          </Button>
-        </Col>
-      </Row>
-    </Container>
+
+  return (
+    <>
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <div className="receipe-slider">
+              <img src={recipe?.image} alt="" className="w-100" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="receipe-content-area">
+        <div className="container">
+          <div className="row">
+            <div className="col-12 col-md-8">
+              <div className="receipe-headline my-5">
+                <h2>{recipe?.title}</h2>
+                <div className="receipe-duration">
+                  <h6>Prep: {recipe?.preparationMinutes ? recipe?.preparationMinutes : '-'} mins</h6>
+                  <h6>Cook: {recipe?.readyInMinutes} mins</h6>
+                  <h6>Yields: {recipe?.servings} Servings</h6>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-12 col-md-4">
+              <div className="receipe-ratings text-right my-5">
+                <div className="ratings">
+                  <i className="fa fa-star" aria-hidden="true"></i>
+                  <i className="fa fa-star" aria-hidden="true"></i>
+                  <i className="fa fa-star" aria-hidden="true"></i>
+                  <i className="fa fa-star" aria-hidden="true"></i>
+                  <i className="fa fa-star-o" aria-hidden="true"></i>
+                </div>
+                <a type="button" className="btn delicious-btn" onClick={() => saveToFavorites()}>Save to favorites</a>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-12 col-lg-8">
+              <div className="single-preparation-step d-flex">
+                <h4>01.</h4>
+                <p dangerouslySetInnerHTML={{ __html: recipe?.summary }}></p>
+              </div>
+            </div>
+
+            <div className="col-12 col-lg-4">
+              <div className="ingredients">
+                <h4>Ingredients</h4>
+
+                {recipe?.extendedIngredients.map((data, id) => {
+                  return (
+                    <div className="custom-control custom-checkbox" key={id}>
+                      <input type="checkbox" className="custom-control-input" id={data?.id} />
+                      <label className="custom-control-label" htmlFor={data?.id}>{data?.name}</label>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

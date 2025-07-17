@@ -9,17 +9,27 @@ export const fetchRecipes = async ({
   offset = 0,
   sort,
 }) => {
-  const res = await axios.get(`${BASE_URL}/complexSearch`, {
-    params: {
-      apiKey: API_KEY,
-      query,
-      number,
-      offset,
-      sort: sort !== "all" ? sort : undefined,
-    },
-  });
-  return res.data.results;
+  try {
+    const res = await axios.get(`${BASE_URL}/complexSearch`, {
+      params: {
+        apiKey: API_KEY,
+        query,
+        number,
+        offset,
+        sort: sort !== "all" ? sort : undefined,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching recipes:", error?.response?.data || error.message);
+    return {
+      results: [],
+      totalResults: 0,
+    };
+  }
 };
+
 export const fetchRecipeById = async (id) => {
   const res = await axios.get(`${BASE_URL}/${id}/information`, {
     params: { apiKey: API_KEY },
