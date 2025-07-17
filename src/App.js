@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import RecipePage from "./pages/RecipePage";
 import Saved from "./pages/Saved";
@@ -15,11 +15,33 @@ import SaveImg from "./assets/img/bg-img/breadcumb2.jpg";
 import { useEffect, useState } from "react";
 import Preloader from "./components/Ui/Preloader";
 import AllRecipes from "./pages/AllRecipes";
-import Cart from "./pages/Cart";
+import { useAuth } from "./context/AuthContext";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(true);
+
+  // This flag will track if user logged in at least once
+  const [hasLoggedInOnce, setHasLoggedInOnce] = useState(false);
+
+  useEffect(() => {
+    // Load persisted login flag from localStorage
+    const loggedInFlag = localStorage.getItem("hasLoggedInOnce");
+    if (loggedInFlag === "true") {
+      setHasLoggedInOnce(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Set the flag on login
+      localStorage.setItem("hasLoggedInOnce", "true");
+      setHasLoggedInOnce(true);
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -54,23 +76,39 @@ function App() {
   }
   return (
     <>
-      <Header />
-      {showBreadcrumb && (
-        <Breadcrumbs
-          title={currentConfig.title}
-          backgroundImage={currentConfig.backgroundImage}
-        />
+      {location.pathname !== "/login" && location.pathname !== "/register" && (
+        <>
+          <Header />
+          {showBreadcrumb && (
+            <Breadcrumbs
+              title={currentConfig.title}
+              backgroundImage={currentConfig.backgroundImage}
+            />
+          )}
+        </>
       )}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/recipe/:id" element={<RecipePage />} />
         <Route path="/all-recipes" element={<AllRecipes />} />
-        <Route path="/saved" element={<Saved />} />
+
+        <Route
+          path="/saved"
+          element={
+            <Saved />
+          }
+        />
+
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/about" element={<AboutUs />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
-      <Footer />
+
+      {location.pathname !== "/login" && location.pathname !== "/register" && (
+        <Footer />
+      )}
     </>
   );
 }

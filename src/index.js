@@ -14,12 +14,15 @@ import "./styles/magnific-popup.css";
 import "./styles/owl.carousel.min.css";
 import "./styles/nice-select.min.css";
 import { FormProvider } from "./context/FormContext";
+import { AuthProvider } from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <FormProvider>
-    <Router>
-      <App />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <App />
+      </Router>
+    </AuthProvider>
   </FormProvider>
 );

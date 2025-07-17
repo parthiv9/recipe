@@ -1,6 +1,7 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Logo from "../../assets/img/core-img/logo.png";
+import { useAuth } from "../../context/AuthContext";
 
 const navItems = [
   {
@@ -22,11 +23,7 @@ const navItems = [
   {
     label: "About us",
     path: "/about",
-  },
-  {
-    label: "Cart",
-    path: "/cart",
-  },
+  }
 ];
 
 const renderDropdown = (
@@ -83,13 +80,16 @@ const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isSticky, setSticky] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 991);
-  const [searchOpen, setSearchOpen] = useState(false);
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
 
   // Toggle mobile menu
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
-  // Toggle search overlay
-  const toggleSearch = () => setSearchOpen((prev) => !prev);
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   // Handle screen resize
   useEffect(() => {
@@ -108,9 +108,8 @@ const Header = () => {
   return (
     <>
       <header
-        className={`header-area classy-nav-container ${
-          isMobile ? "breakpoint-on" : "breakpoint-off"
-        } ${isSticky ? "classy-sticky" : ""}`}
+        className={`header-area classy-nav-container ${isMobile ? "breakpoint-on" : "breakpoint-off"
+          } ${isSticky ? "classy-sticky" : ""}`}
       >
         {/* Navbar */}
         <div className="delicious-main-menu">
@@ -160,9 +159,8 @@ const Header = () => {
                           return (
                             <li
                               key={index}
-                              className={`cn-dropdown-item has-down ${
-                                isOpen ? "active" : ""
-                              }`}
+                              className={`cn-dropdown-item has-down ${isOpen ? "active" : ""
+                                }`}
                             >
                               <button
                                 className="nav-btn"
@@ -278,9 +276,16 @@ const Header = () => {
                         }
                       })}
                     </ul>
-                    {/* Search Button */}
-                    <div className="search-btn" onClick={toggleSearch}>
-                      <i className="fa fa-search"></i>
+                    <div className="user-btn ms-3">
+                      {user ? (
+                        <button onClick={handleLogout} className="btn btn-sm btn-outline-danger rounded-pill">
+                          <i className="fa fa-sign-out me-1"></i> Logout
+                        </button>
+                      ) : (
+                        <Link to="/login" className="btn btn-sm btn-outline-dark rounded-pill">
+                          <i className="fa fa-user me-1"></i> Login
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -289,40 +294,6 @@ const Header = () => {
           </div>
         </div>
       </header>
-
-      {/* Search Overlay */}
-      {searchOpen && (
-        <div className="search-wrapper">
-          {/* Close Btn */}
-          <div className="close-btn" onClick={toggleSearch}>
-            <i className="fa fa-times" aria-hidden="true"></i>
-          </div>
-
-          <div className="container h-100">
-            <div className="row h-100 align-items-center">
-              <div className="col-12">
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    alert("Search submitted!");
-                    toggleSearch();
-                  }}
-                >
-                  <input
-                    type="search"
-                    name="search"
-                    placeholder="Type any keywords..."
-                    autoFocus
-                  />
-                  <button type="submit">
-                    <i className="fa fa-search" aria-hidden="true"></i>
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };

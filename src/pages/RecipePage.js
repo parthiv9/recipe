@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Col, Container, Row } from "react-bootstrap";
 import { fetchRecipeById } from "../services/api";
 import Preloader from "../components/Ui/Preloader";
+import { useAuth } from "../context/AuthContext";
 
 const RecipePage = () => {
   const { id } = useParams();
@@ -10,6 +10,8 @@ const RecipePage = () => {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { user } = useAuth();
+
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -26,21 +28,24 @@ const RecipePage = () => {
   }, [id]);
 
   const saveToFavorites = () => {
-    if (!recipe) {
+    if (!user || !user.email) {
+      alert("You must be logged in to save recipes.");
       return;
     }
 
-    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    const alreadySaved = storedFavorites.some((r) => r.id === recipe.id);
+    const key = `favorites_${user.email}`;
+    const storedFavorites = JSON.parse(localStorage.getItem(key)) || [];
 
-    if (!alreadySaved) {
-      storedFavorites.push(recipe);
-      localStorage.setItem("favorites", JSON.stringify(storedFavorites));
-      alert("Recipe saved to favorites!");
-      navigate("/saved");
-    } else {
+    const alreadySaved = storedFavorites.some((r) => r.id === recipe.id);
+    if (alreadySaved) {
       alert("Recipe already in favorites.");
+      return;
     }
+
+    storedFavorites.push(recipe);
+    localStorage.setItem(key, JSON.stringify(storedFavorites));
+    alert("Recipe saved to favorites!");
+    navigate("/saved");
   };
 
   if (loading) {
@@ -53,7 +58,7 @@ const RecipePage = () => {
 
   return (
     <>
-      <div className="container">
+      <div className="container mt-4">
         <div className="row">
           <div className="col-12">
             <div className="receipe-slider">
