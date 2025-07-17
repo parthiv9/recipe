@@ -63,7 +63,7 @@ const navItems = [
   },
   {
     label: "Contact",
-    path: "#!",
+    path: "/contact-us",
   },
 ];
 
@@ -336,8 +336,8 @@ const Header = () => {
             <i className="fa fa-times" aria-hidden="true"></i>
           </div>
 
-          <div className="container">
-            <div className="row">
+          <div className="container h-100">
+            <div className="row h-100 align-items-center">
               <div className="col-12">
                 <form
                   onSubmit={(e) => {

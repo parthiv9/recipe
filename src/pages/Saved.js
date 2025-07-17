@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import RecipeCard from "../components/RecipeCard";
 import { Col, Container, Row } from "react-bootstrap";
-import Breadcrumbs from "../components/BreadCrumbs";
 
 const Saved = () => {
   const [favorites, setFavorites] = useState([]);
@@ -27,7 +26,7 @@ const Saved = () => {
 
   return (
     <Container>
-      <Breadcrumbs />
+      {/* <Breadcrumbs /> */}
       <h1 className="text-2xl font-bold mb-4">Your Saved Recipes</h1>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="saved-recipes">

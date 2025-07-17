@@ -1,35 +1,27 @@
-import { Link, useLocation } from 'react-router-dom';
-import { Breadcrumb } from 'react-bootstrap';
+import PropTypes from "prop-types";
 
-export default function Breadcrumbs() {
-    const location = useLocation();
-
-    const pathnames = location.pathname.split('/').filter((x) => x);
-
-    return (
-        <Breadcrumb className="custom-breadcrumb my-3">
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: '/' }}>
-                Home
-            </Breadcrumb.Item>
-
-            {pathnames.map((name, index) => {
-                const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
-                const isLast = index === pathnames.length - 1;
-
-                const label = decodeURIComponent(name)
-                    .replace(/-/g, ' ')
-                    .replace(/\b\w/g, (l) => l.toUpperCase());
-
-                return isLast ? (
-                    <Breadcrumb.Item active key={routeTo}>
-                        {label}
-                    </Breadcrumb.Item>
-                ) : (
-                    <Breadcrumb.Item key={routeTo} linkAs={Link} linkProps={{ to: routeTo }}>
-                        {label}
-                    </Breadcrumb.Item>
-                );
-            })}
-        </Breadcrumb>
-    );
+function Breadcrumbs({ title, backgroundImage }) {
+  const sectionStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+  };
+  return (
+    <div className="breadcumb-area bg-img bg-overlay" style={sectionStyle}>
+      <div className="container h-100">
+        <div className="row h-100 align-items-center">
+          <div className="col-12">
+            <div className="breadcumb-text text-center">
+              <h2>{title}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
+
+Breadcrumbs.propTypes = {
+  title: PropTypes.string.isRequired,
+  backgroundImage: PropTypes.string,
+};
+
+export default Breadcrumbs;
