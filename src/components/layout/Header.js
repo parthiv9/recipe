@@ -23,6 +23,10 @@ const navItems = [
     label: "About us",
     path: "/about",
   },
+  {
+    label: "Cart",
+    path: "/cart",
+  },
 ];
 
 const renderDropdown = (
