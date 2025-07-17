@@ -19,6 +19,10 @@ const navItems = [
     label: "Contact",
     path: "/contact-us",
   },
+  {
+    label: "About us",
+    path: "/about",
+  },
 ];
 
 const renderDropdown = (

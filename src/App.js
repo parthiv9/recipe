@@ -5,15 +5,26 @@ import Saved from "./pages/Saved";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Contact from "./pages/Contact";
+import AboutUs from "./pages/AboutUs";
 import Breadcrumbs from "./components/BreadCrumbs";
 
 import RecipeDetails from "./assets/img/bg-img/breadcumb3.jpg";
 import ContactImg from "./assets/img/bg-img/breadcumb4.jpg";
 import AboutImg from "./assets/img/bg-img/breadcumb1.jpg";
 import SaveImg from "./assets/img/bg-img/breadcumb2.jpg";
+import { useEffect, useState } from "react";
+import Preloader from "./components/Ui/Preloader";
 
 function App() {
   const location = useLocation();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200); // 1.2s delay
+    return () => clearTimeout(timer);
+  }, []);
 
   const breadcrumbMap = [
     {
@@ -34,7 +45,9 @@ function App() {
     ) || null;
 
   const showBreadcrumb = location.pathname !== "/" && currentConfig;
-
+  if (loading) {
+    return <Preloader />;
+  }
   return (
     <>
       <Header />
@@ -49,6 +62,7 @@ function App() {
         <Route path="/recipe/:id" element={<RecipePage />} />
         <Route path="/saved" element={<Saved />} />
         <Route path="/contact-us" element={<Contact />} />
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
       <Footer />
     </>
