@@ -6,22 +6,11 @@ const SearchBar = ({ onSearch }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (query) onSearch(query);
+    if (query) {
+      onSearch(query);
+    }
   };
   return (
-    // <form onSubmit={handleSubmit} className="d-flex">
-    //   <input
-    //     type="text"
-    //     placeholder="Search recipes..."
-    //     value={query}
-    //     onChange={(e) => setQuery(e.target.value)}
-    //     className="d-block"
-    //   />
-    //   <Button type="submit" variant="outline-primary">
-    //     Search
-    //   </Button>
-    // </form>
-
     <Form onSubmit={handleSubmit} className="d-flex">
       <FormControl
         type="text"

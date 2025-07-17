@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
+import { fetchRecipeById } from "../services/api";
 import Breadcrumbs from "../components/BreadCrumbs";
 
 const RecipePage = () => {
@@ -14,11 +14,8 @@ const RecipePage = () => {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const apiKey = process.env.REACT_APP_API_KEY || "your_default_key";
-        const response = await axios.get(
-          `https://api.spoonacular.com/recipes/${id}/information?apiKey=${apiKey}`
-        );
-        setRecipe(response.data);
+        const data = await fetchRecipeById(id);
+        setRecipe(data);
       } catch (err) {
         setError("Failed to load recipe. Please try again later.");
       } finally {
@@ -29,7 +26,9 @@ const RecipePage = () => {
   }, [id]);
 
   const saveToFavorites = () => {
-    if (!recipe) return;
+    if (!recipe) {
+      return;
+    }
 
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     const alreadySaved = storedFavorites.some((r) => r.id === recipe.id);

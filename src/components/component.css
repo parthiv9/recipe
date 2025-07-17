@@ -1,59 +1,197 @@
 .custom-breadcrumb {
-    background-color: #f9fafb;
-    padding: 0.75rem 1.25rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    font-weight: 600;
-    font-size: 0.9rem;
-    white-space: nowrap;
-
+  background-color: #f9fafb;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .custom-breadcrumb .breadcrumb {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
-.custom-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
-    color: #6c757d;
-    content: "›";
-    font-size: 1.2rem;
-    vertical-align: middle;
-    padding: 0 0.5rem;
-    user-select: none;
+.custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  color: #6c757d;
+  content: "›";
+  font-size: 1.2rem;
+  vertical-align: middle;
+  padding: 0 0.5rem;
+  user-select: none;
 }
 
 .custom-breadcrumb .breadcrumb-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Hover & active colors */
 .custom-breadcrumb .breadcrumb-item a {
-    color: #4f46e5;
-    text-decoration: none;
-    transition: color 0.2s ease;
+  color: #4f46e5;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .custom-breadcrumb .breadcrumb-item a:hover {
-    color: #4338ca;
-    text-decoration: underline;
+  color: #4338ca;
+  text-decoration: underline;
 }
 
 .custom-breadcrumb .breadcrumb-item.active {
-    color: #4338ca;
-    cursor: default;
+  color: #4338ca;
+  cursor: default;
 }
 
 @media (max-width: 600px) {
-    .custom-breadcrumb {
-        font-size: 0.8rem;
-        padding: 0.5rem 1rem;
-    }
+  .custom-breadcrumb {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+  }
 
-    .custom-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
-        padding: 0 0.3rem;
-    }
+  .custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    padding: 0 0.3rem;
+  }
 }
+
+/* Hero slider CSS */
+
+.hero-area {
+  position: relative;
+  z-index: 1;
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+.hero-slides {
+  position: relative;
+  z-index: 1;
+}
+.hero-slides .single-hero-slide {
+  width: 100%;
+  height: 820px;
+  position: relative;
+  z-index: 1;
+}
+.hero-slides .single-hero-slide img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .hero-slides .single-hero-slide {
+    height: 650px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .hero-slides .single-hero-slide {
+    height: 650px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .hero-slides .single-hero-slide {
+    height: 650px;
+  }
+}
+.hero-slides .single-hero-slide .slide-content {
+  position: relative;
+  z-index: 1;
+  padding: 60px 50px;
+  border-left: 3px solid #40ba37;
+  background-color: rgba(24, 24, 24, 0.54);
+}
+@media only screen and (max-width: 767px) {
+  .hero-slides .single-hero-slide .slide-content {
+    padding: 30px 20px;
+  }
+}
+.hero-slides .single-hero-slide .slide-content h2 {
+  font-size: 30px;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+@media only screen and (max-width: 767px) {
+  .hero-slides .single-hero-slide .slide-content h2 {
+    font-size: 24px;
+  }
+}
+.hero-slides .single-hero-slide .slide-content p {
+  font-size: 16px;
+  margin-bottom: 50px;
+  color: #ffffff;
+}
+.hero-slides .owl-prev,
+.hero-slides .owl-next {
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  color: #ffffff;
+  top: 50%;
+  margin-top: -20px;
+  left: 4%;
+  position: absolute;
+  z-index: 10;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms;
+  border-bottom: 3px solid #1c8314;
+}
+@media only screen and (max-width: 767px) {
+  .hero-slides .owl-prev,
+  .hero-slides .owl-next {
+    font-size: 13px;
+  }
+}
+.hero-slides .owl-next {
+  left: auto;
+  right: 4%;
+}
+.hero-slides:hover .owl-prev,
+.hero-slides:hover .owl-next {
+  opacity: 1;
+  visibility: visible;
+}
+.hero-slides .owl-dots {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  bottom: 50px;
+  z-index: 10;
+  width: 80%;
+  left: 17%;
+}
+.hero-slides .owl-dots .owl-dot {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-right: 10px;
+}
+.hero-slides .owl-dots .owl-dot.active {
+  color: #1c8314;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .breakpoint-on .classynav ul li.cn-dropdown-item > a::after,
+  .breakpoint-on .classynav ul li.megamenu-item > a::after {
+    top: 10px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .breakpoint-on .classynav ul li.cn-dropdown-item > a::after,
+  .breakpoint-on .classynav ul li.megamenu-item > a::after {
+    top: 10px;
+  }
+}
+
+/* Hero slider CSS */

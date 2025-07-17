@@ -13,7 +13,9 @@ const Saved = () => {
   }, []);
 
   const handleDragEnd = (result) => {
-    if (!result.destination) return;
+    if (!result.destination) {
+      return;
+    }
 
     const reordered = Array.from(favorites);
     const [movedItem] = reordered.splice(result.source.index, 1);
@@ -37,11 +39,15 @@ const Saved = () => {
             >
               <Row className="gx-3 gy-3">
                 {favorites.map((recipe, index) => (
-                  <Col xxl={4} xl={4} lg={2} md={6} sm={6} key={recipe.id.toString()}>
-                    <Draggable
-                      draggableId={recipe.id.toString()}
-                      index={index}
-                    >
+                  <Col
+                    xxl={4}
+                    xl={4}
+                    lg={2}
+                    md={6}
+                    sm={6}
+                    key={recipe.id.toString()}
+                  >
+                    <Draggable draggableId={recipe.id.toString()} index={index}>
                       {(provided) => (
                         <div
                           ref={provided.innerRef}

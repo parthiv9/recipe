@@ -1,12 +1,19 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
+
+import { HELPER } from "../services";
+import {
+  fetchPopularRecipes,
+  fetchRecipes as fetchRecipesAPI,
+  fetchRecipesByCategory,
+} from "../services/api";
 
 import SearchBar from "../components/SearchBar";
 import RecipeCard from "../components/RecipeCard";
 import Spinner from "../components/Ui/Spinner";
-import { HELPER } from "../services";
-import { fetchRecipes as fetchRecipesAPI } from "../services/api";
-import Breadcrumbs from "../components/BreadCrumbs";
+import HeroSlider from "../components/HeroSilder";
+
+const CATEGORIES = ["breakfast", "dessert"];
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
@@ -14,6 +21,8 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("all");
+  const [categoryRecipes, setCategoryRecipes] = useState({});
+  const [popularRecipes, setPopularRecipes] = useState([]);
 
   const RECIPES_PER_PAGE = 12;
 
@@ -26,7 +35,7 @@ const Home = () => {
         query,
         number: RECIPES_PER_PAGE,
         offset,
-        sort,
+        sort: "popularity",
       });
       setRecipes(results || []);
     } catch (err) {
@@ -37,7 +46,24 @@ const Home = () => {
     }
   };
 
-  // Handle search input from SearchBar
+  const loadCategoryRecipes = async (category) => {
+    try {
+      const results = await fetchRecipesByCategory(category, 0);
+      setCategoryRecipes((prev) => ({ ...prev, [category]: results || [] }));
+    } catch (err) {
+      setError("Failed to fetch category recipes.");
+    }
+  };
+
+  const fetchBestRecipes = async () => {
+    try {
+      const results = await fetchPopularRecipes(6); // Fetch top 6 popular recipes
+      setPopularRecipes(results); // Set popular recipes state
+    } catch (err) {
+      setError("Failed to fetch popular recipes.");
+    }
+  };
+
   const handleSearch = (query) => {
     setPage(1);
     fetchRecipes(query);
@@ -48,61 +74,79 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, sort]);
 
+  useEffect(() => {
+    CATEGORIES.forEach((cat) => loadCategoryRecipes(cat));
+    fetchBestRecipes();
+  }, []);
+
   return (
-    <Container fluid="md" className="py-4">
-      <Breadcrumbs />
-      {/* Top Controls: Search and Sort */}
-      <Row className="align-items-center justify-content-between gx-2 mb-3 gy-md-2 gy-sm-2 gy-2">
-        <Col xxl={6} xl={6} lg={6} md={6} sm={6}>
-          <SearchBar onSearch={handleSearch} />
-        </Col>
-        <Col xxl={2} xl={3} lg={3} md={6} sm={6}>
-          <Form.Select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            aria-label="Sort recipes"
-          >
-            <option value="all">All</option>
-            <option value="popularity">Popularity</option>
-            <option value="healthiness">Healthiness</option>
-            <option value="time">Preparation Time</option>
-            <option value="price">Price</option>
-          </Form.Select>
-        </Col>
-      </Row>
+    <>
+      <HeroSlider />
+      <section className="top-catagory-area section-padding-80-0">
+        <div className="container">
+          <div class="row">
+            {CATEGORIES.map((cat) => (
+              <React.Fragment key={cat}>
+                {categoryRecipes[cat]?.map((recipe) => {
+                  return (
+                    <div class="col-12 col-lg-6" key={recipe.id}>
+                      <div className="single-top-catagory">
+                        <img src={recipe?.image} alt="" />
+                        <div className="top-cta-content">
+                          <h6>{recipe?.title}</h6>
+                          <a
+                            href={`/recipe/${recipe?.id}`}
+                            className="btn delicious-btn"
+                          >
+                            See Full Receipe
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* Loader */}
-      {loading && <Spinner />}
-
-      {/* Error */}
-      {error && <p className="text-danger text-center">{error}</p>}
-
-      {/* Recipes Grid */}
-      <Row className="gy-4 gx-3">
-        {recipes.map((recipe) => (
-          <Col key={recipe.id} xxl={3} xl={4} lg={4} md={6} sm={6} >
-            <RecipeCard recipe={recipe} />
-          </Col>
-        ))}
-      </Row>
-
-      <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          disabled={page === 1}
-          className="px-3 py-2 bg-light border rounded"
-        >
-          Prev
-        </button>
-        <span className="fw-bold">Page {page}</span>
-        <button
-          onClick={() => setPage((prev) => prev + 1)}
-          className="px-3 py-2 bg-light border rounded"
-        >
-          Next
-        </button>
-      </div>
-    </Container>
+      <section className="best-receipe-area">
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <div class="section-heading">
+                <h3>The best Receipies</h3>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            {popularRecipes?.map((data) => {
+              console.log(data);
+              return (
+                <div className="col-12 col-sm-6 col-lg-4" key={data?.id}>
+                  <div className="single-best-receipe-area mb-30">
+                    <img src="img/bg-img/r1.jpg" alt="" />
+                    <div className="receipe-content">
+                      <a href="receipe-post.html">
+                        <h5>Sushi Easy Receipy</h5>
+                      </a>
+                      <div className="ratings">
+                        <i className="fa fa-star" aria-hidden="true"></i>
+                        <i className="fa fa-star" aria-hidden="true"></i>
+                        <i className="fa fa-star" aria-hidden="true"></i>
+                        <i className="fa fa-star" aria-hidden="true"></i>
+                        <i className="fa fa-star-o" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 
