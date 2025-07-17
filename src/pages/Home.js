@@ -12,35 +12,8 @@ import HeroSlider from "../components/HeroSilder";
 const CATEGORIES = ["breakfast", "dessert"];
 
 const Home = () => {
-  // const [recipes, setRecipes] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // const [page, setPage] = useState(1);
-  // const [sort, setSort] = useState("all");
   const [categoryRecipes, setCategoryRecipes] = useState({});
   const [popularRecipes, setPopularRecipes] = useState([]);
-
-  // const RECIPES_PER_PAGE = 12;
-
-  // const fetchRecipes = async (query = "") => {
-  //   try {
-  //     setLoading(true);
-  //     setError(null);
-  //     const offset = (page - 1) * RECIPES_PER_PAGE;
-  //     const results = await fetchRecipesAPI({
-  //       query,
-  //       number: RECIPES_PER_PAGE,
-  //       offset,
-  //       sort: "popularity",
-  //     });
-  //     setRecipes(results || []);
-  //   } catch (err) {
-  //     setError("Failed to fetch recipes. Please try again later.");
-  //     HELPER.toaster?.error?.("Failed to fetch recipes.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const loadCategoryRecipes = async (category) => {
     try {
@@ -48,7 +21,6 @@ const Home = () => {
       setCategoryRecipes((prev) => ({ ...prev, [category]: results || [] }));
     } catch (err) {
       HELPER.toaster?.error?.("Failed to fetch category recipes.");
-      // setError("Failed to fetch category recipes.");
     }
   };
 
@@ -58,19 +30,8 @@ const Home = () => {
       setPopularRecipes(results);
     } catch (err) {
       HELPER.toaster?.error?.("Failed to fetch popular recipes.");
-      // setError("Failed to fetch popular recipes.");
     }
   };
-
-  // const handleSearch = (query) => {
-  //   setPage(1);
-  //   // fetchRecipes(query);
-  // };
-
-  // useEffect(() => {
-  //   // fetchRecipes();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [page, sort]);
 
   useEffect(() => {
     CATEGORIES.forEach((cat) => loadCategoryRecipes(cat));

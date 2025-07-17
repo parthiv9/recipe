@@ -51,9 +51,6 @@ const RecipePage = () => {
     return <p className="text-center text-red-500">{error}</p>;
   }
 
-  console.log(recipe);
-
-
   return (
     <>
       <div className="container">

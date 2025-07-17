@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import RecipeCard from "../components/RecipeCard";
-import { Col, Container, Row, Button } from "react-bootstrap";
+import { Container, Table, Button } from "react-bootstrap";
 
 const Saved = () => {
   const [favorites, setFavorites] = useState([]);
@@ -14,7 +13,7 @@ const Saved = () => {
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
-    const reordered = Array.from(favorites);
+    const reordered = [...favorites];
     const [movedItem] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, movedItem);
 
@@ -34,45 +33,64 @@ const Saved = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="saved-recipes">
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              <Row className="gx-3 gy-3">
+            <Table
+              striped
+              bordered
+              hover
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Image</th>
+                  <th>Title</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
                 {favorites.map((recipe, index) => (
-                  <Col
-                    xxl={4}
-                    xl={4}
-                    lg={4}
-                    md={6}
-                    sm={12}
-                    key={recipe.id.toString()}
+                  <Draggable
+                    draggableId={recipe.id.toString()}
+                    index={index}
+                    key={recipe.id}
                   >
-                    <Draggable
-                      draggableId={recipe.id.toString()}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className="position-relative"
-                        >
-                          <RecipeCard recipe={recipe} />
+                    {(provided, snapshot) => (
+                      <tr
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={{
+                          ...provided.draggableProps.style,
+                          backgroundColor: snapshot.isDragging ? "#f0f8ff" : "",
+                          cursor: "move",
+                        }}
+                      >
+                        <td>{index + 1}</td>
+                        <td>
+                          <img
+                            src={recipe.image}
+                            alt={recipe.title}
+                            style={{ width: "80px", height: "auto" }}
+                          />
+                        </td>
+                        <td>{recipe.title}</td>
+                        <td>
                           <Button
                             variant="danger"
                             size="sm"
-                            className="position-absolute top-0 end-0 m-2"
                             onClick={() => handleRemove(recipe.id)}
                           >
-                            ✕
+                            Remove
                           </Button>
-                        </div>
-                      )}
-                    </Draggable>
-                  </Col>
+                        </td>
+                      </tr>
+                    )}
+                  </Draggable>
                 ))}
                 {provided.placeholder}
-              </Row>
-            </div>
+              </tbody>
+            </Table>
           )}
         </Droppable>
       </DragDropContext>
