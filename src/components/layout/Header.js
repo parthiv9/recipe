@@ -8,58 +8,12 @@ const navItems = [
     path: "/",
   },
   {
+    label: "Receipies",
+    path: "#!",
+  },
+  {
     label: "Saved",
     path: "/saved",
-  },
-
-  {
-    label: "Mega Menu",
-    megamenu: [
-      {
-        title: "Category",
-        items: [
-          { label: "Home", path: "/" },
-          { label: "About Us", path: "/about" },
-          { label: "Blog Post", path: "/blog-post" },
-          { label: "Receipe Post", path: "/receipe-post" },
-          { label: "Contact", path: "/contact" },
-          { label: "Elements", path: "/elements" },
-        ],
-      },
-      {
-        title: "Category",
-        items: [
-          { label: "Home", path: "/" },
-          { label: "About Us", path: "/about" },
-          { label: "Blog Post", path: "/blog-post" },
-          { label: "Receipe Post", path: "/receipe-post" },
-          { label: "Contact", path: "/contact" },
-          { label: "Elements", path: "/elements" },
-        ],
-      },
-      {
-        title: "Category",
-        items: [
-          { label: "Home", path: "/" },
-          { label: "About Us", path: "/about" },
-          { label: "Blog Post", path: "/blog-post" },
-          { label: "Receipe Post", path: "/receipe-post" },
-          { label: "Contact", path: "/contact" },
-          { label: "Elements", path: "/elements" },
-        ],
-      },
-      {
-        sliderImages: ["/img/bg-img/bg1.jpg", "/img/bg-img/bg6.jpg"],
-      },
-    ],
-  },
-  {
-    label: "Receipies",
-    path: "/receipe-post",
-  },
-  {
-    label: "4 Vegans",
-    path: "#!",
   },
   {
     label: "Contact",
